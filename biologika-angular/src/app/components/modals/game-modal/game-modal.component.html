@@ -1,0 +1,34 @@
+<div class="ad-modal-overlay" (click)="close.emit()">
+  <div class="ad-box" (click)="$event.stopPropagation()">
+    <button class="ad-close" (click)="close.emit()">×</button>
+
+    <div class="ad-badge">GIOCO 3 CARTE</div>
+    <h3 class="ad-title">🃏 Scegli una carta</h3>
+    <p class="ad-desc" style="margin-bottom:12px;">
+      Scopri una carta tra 3. Solo una contiene uno sconto!
+    </p>
+
+    <div class="cards-row">
+      @for (reward of rewards; track reward.title; let i = $index) {
+        <button
+          class="lottery-card"
+          [class.flipped]="flipped[i]"
+          [disabled]="picked"
+          (click)="pickCard(i)">
+          <div class="card-inner">
+            <div class="card-face card-back">🎴</div>
+            <div class="card-face card-front">{{ reward.title }}</div>
+          </div>
+        </button>
+      }
+    </div>
+
+    @if (result) {
+      <div class="game-result">
+        <p class="result-title">{{ result.title }}</p>
+        <p class="result-sub">{{ result.sub }}</p>
+        <button class="ad-btn" (click)="close.emit()">✅ Ok</button>
+      </div>
+    }
+  </div>
+</div>

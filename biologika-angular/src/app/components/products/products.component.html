@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="section-header">
+    <div>
+      <h2>I Nostri Prodotti Bio</h2>
+      <p>Genuinità certificata, tracciabilità totale</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    @for (product of products; track product.id) {
+      <div class="product-card">
+        <div class="product-image" [style.background-image]="'url(' + product.image + ')'">
+          <span class="product-tag-badge">{{ product.tag }}</span>
+        </div>
+        <div class="product-content">
+          <h3>{{ product.name }}</h3>
+          <p class="desc">{{ product.desc }}</p>
+          <div class="price-row">
+            <span class="price">€ {{ product.price.toFixed(2) }}</span>
+            <button class="add-btn" (click)="addToCart(product)">
+              {{ addingId === product.id ? '✓' : '+' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

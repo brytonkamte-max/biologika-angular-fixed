@@ -1,0 +1,56 @@
+<section class="hero">
+  <!-- Carousel -->
+  <div class="hero-carousel">
+    @for (slide of slides; track slide.bgClass; let i = $index) {
+      <div class="carousel-slide" [class]="slide.bgClass" [class.active]="i === currentSlide">
+        <div class="slide-overlay">
+          <h2 class="slide-title">{{ slide.title }}</h2>
+          <p class="slide-subtitle">{{ slide.subtitle }}</p>
+        </div>
+      </div>
+    }
+
+    <div class="carousel-indicators">
+      @for (slide of slides; track slide.bgClass; let i = $index) {
+        <div class="indicator" [class.active]="i === currentSlide" (click)="goToSlide(i)"></div>
+      }
+    </div>
+  </div>
+
+  <!-- Features Bar -->
+  <section class="features-bar">
+    <div class="feat-item">
+      <i class="fas fa-leaf"></i>
+      <h4>100% Biologico</h4>
+      <p>Prodotti certificati e coltivati nel rispetto della natura.</p>
+    </div>
+    <div class="feat-item">
+      <i class="fas fa-truck"></i>
+      <h4>Spedizione Veloce</h4>
+      <p>Consegna in 3-5 giorni lavorativi in tutta Italia.</p>
+    </div>
+    <div class="feat-item">
+      <i class="fas fa-award"></i>
+      <h4>Qualità Garantita</h4>
+      <p>Selezione accurata dai migliori produttori locali.</p>
+    </div>
+    <div class="feat-item">
+      <i class="fas fa-gift"></i>
+      <h4>Premi & Lotteria</h4>
+      <p>Gioca e vinci sconti esclusivi sul prossimo ordine.</p>
+    </div>
+  </section>
+
+  <h1>Il Gusto della Natura</h1>
+  <p>
+    Biologika è una cooperativa di giovani agricoltori appassionati. Coltiviamo con rispetto, raccogliamo
+    con cura, consegniamo con orgoglio. Dalla nostra terra alla tua casa, prodotti biologici certificati
+    di altissima qualità.
+  </p>
+
+  @if (auth.isLoggedIn() && !auth.isAdmin() && auth.currentUser()!.firstOrder) {
+    <div class="discount-banner">
+      🎉 Benvenuto! Il tuo primo ordine ha il 5% di sconto automatico!
+    </div>
+  }
+</section>

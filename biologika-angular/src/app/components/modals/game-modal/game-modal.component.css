@@ -1,0 +1,7 @@
+.game-result {
+  margin-top: 20px;
+  padding: 1.5rem;
+  background: var(--brand-light);
+  border-radius: 16px;
+  text-align: center;
+}

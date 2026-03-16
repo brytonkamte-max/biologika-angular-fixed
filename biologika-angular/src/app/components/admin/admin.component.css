@@ -1,0 +1,39 @@
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+textarea {
+  resize: vertical;
+  font-family: inherit;
+  font-size: 1rem;
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  transition: 0.3s;
+  background: var(--surface);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px rgba(45,106,62,0.1);
+}
+
+select {
+  font-family: inherit;
+  cursor: pointer;
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  font-size: 1rem;
+  background: var(--surface);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--brand);
+}

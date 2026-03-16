@@ -1,0 +1,59 @@
+<!-- Header -->
+<app-header
+  (openAuth)="showAuthModal.set(true)"
+  (openCart)="openCart()">
+</app-header>
+
+<!-- Main Content -->
+<main>
+  @switch (nav.currentView()) {
+    @case ('home') {
+      <app-hero></app-hero>
+      <app-products (openAuth)="showAuthModal.set(true)"></app-products>
+    }
+    @case ('dashboard') {
+      <app-dashboard></app-dashboard>
+    }
+    @case ('admin') {
+      <app-admin></app-admin>
+    }
+  }
+</main>
+
+<!-- Footer -->
+<app-footer></app-footer>
+
+<!-- ===== MODALS ===== -->
+
+@if (showAuthModal()) {
+  <app-auth-modal (close)="showAuthModal.set(false)"></app-auth-modal>
+}
+
+@if (showCartModal()) {
+  <app-cart-modal
+    (close)="showCartModal.set(false)"
+    (checkoutDone)="onCheckoutDone($event)">
+  </app-cart-modal>
+}
+
+@if (showAdModal()) {
+  <app-ad-modal
+    (close)="onAdClosed()"
+    (goToProducts)="onAdGoToProducts()">
+  </app-ad-modal>
+}
+
+@if (showLotteryInfoModal()) {
+  <app-lottery-modal (close)="showLotteryInfoModal.set(false)"></app-lottery-modal>
+}
+
+@if (showLotteryInviteModal()) {
+  <app-lottery-invite-modal
+    (close)="showLotteryInviteModal.set(false)"
+    (play)="onPlayLottery()">
+  </app-lottery-invite-modal>
+}
+
+@if (showGameModal()) {
+  <app-game-modal (close)="showGameModal.set(false)"></app-game-modal>
+}

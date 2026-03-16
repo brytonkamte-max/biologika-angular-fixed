@@ -1,0 +1,90 @@
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cart-item {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+
+.item-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-info h4 {
+  margin-bottom: 0.5rem;
+}
+
+.item-price {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.item-total {
+  text-align: right;
+}
+
+.item-total-price {
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--brand);
+  margin-bottom: 0.5rem;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: var(--accent-red);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.cart-footer {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 3px solid var(--border);
+}
+
+.discount-info {
+  background: linear-gradient(135deg, var(--brand-light), #dcfce7);
+  padding: 1.5rem;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--brand);
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.total-label {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.total-amount {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--brand);
+}

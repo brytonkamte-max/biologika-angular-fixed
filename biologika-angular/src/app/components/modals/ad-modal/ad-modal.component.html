@@ -1,0 +1,28 @@
+<div class="ad-modal-overlay" (click)="close.emit()">
+  <div class="ad-box" (click)="$event.stopPropagation()">
+    <button class="ad-close" (click)="close.emit()">×</button>
+
+    <div class="ad-badge">OFFERTA STAGIONALE</div>
+    <h3 class="ad-title">🍂 Sconto speciale sul prodotto</h3>
+
+    @if (product) {
+      <div class="ad-content">
+        <img class="ad-img" [src]="product.image" [alt]="product.name">
+        <div class="ad-info">
+          <h4 class="ad-name">{{ product.name }}</h4>
+          <p class="ad-desc">{{ product.desc }}</p>
+
+          <div class="ad-prices">
+            <span class="ad-old">€ {{ product.price.toFixed(2) }}</span>
+            <span class="ad-discount">-{{ discountPct }}%</span>
+          </div>
+
+          <p class="ad-new">Ora: € {{ newPrice.toFixed(2) }}</p>
+          <p class="ad-note">⏳ Promo valida per un periodo limitato!</p>
+
+          <button class="ad-btn" (click)="onGoToProducts()">🛒 Vai ai prodotti</button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

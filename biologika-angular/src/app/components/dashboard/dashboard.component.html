@@ -1,0 +1,73 @@
+<div class="container">
+  @if (auth.currentUser(); as user) {
+    <div class="dashboard">
+      <div class="dashboard-header">
+        <h2 class="dashboard-title">Il Mio Profilo</h2>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          <button class="btn btn-primary" (click)="editProfile()">✏️ Modifica Dati</button>
+          <button class="btn btn-secondary" (click)="logout()">Esci dall'Account</button>
+        </div>
+      </div>
+
+      <!-- Profile Info -->
+      <div class="profile-grid">
+        <div class="profile-card">
+          <p class="profile-label">Nome Completo</p>
+          <p class="profile-value">{{ user.name }}</p>
+        </div>
+        <div class="profile-card">
+          <p class="profile-label">Email</p>
+          <p class="profile-value">{{ user.email }}</p>
+        </div>
+        <div class="profile-card">
+          <p class="profile-label">Telefono</p>
+          <p class="profile-value">{{ user.phone }}</p>
+        </div>
+        <div class="profile-card">
+          <p class="profile-label">Indirizzo</p>
+          <p class="profile-value">{{ user.address }}</p>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem;">
+            {{ user.city }} {{ user.zip }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Orders -->
+      <h3 class="orders-title">Storico Ordini</h3>
+
+      @if (userOrders.length === 0) {
+        <p class="no-orders">Nessun ordine effettuato ancora.</p>
+      } @else {
+        <div class="order-list">
+          @for (order of userOrders; track order.id) {
+            <div class="order-item">
+              <div class="order-info">
+                <h4>Ordine #{{ order.id }}</h4>
+                <p class="order-date">📅 {{ formatDate(order.date) }}</p>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.6rem;">
+                  🛒 {{ order.items.length }} prodotti
+                </p>
+                @if (order.firstOrder) {
+                  <span style="font-size:0.85rem; color: var(--brand); font-weight:600;">✅ Sconto primo ordine applicato</span>
+                }
+              </div>
+              <div class="order-total">€ {{ order.total.toFixed(2) }}</div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Marketing Consent -->
+      <div class="marketing-section">
+        <label class="marketing-label">
+          <input type="checkbox"
+                 [checked]="user.marketingConsent"
+                 (change)="updateMarketing($any($event.target).checked)">
+          <span>
+            <strong>Voglio ricevere</strong> offerte esclusive e novità sui prodotti biologici
+          </span>
+        </label>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,39 @@
+<header>
+  <a class="logo-container" (click)="nav.navigate('home')" style="cursor:pointer; text-decoration:none;">
+    <img src="assets/img/logo.jpeg" alt="Biologika Logo" class="logo-img">
+    <span class="logo-text">Biologika.</span>
+  </a>
+
+  <div class="header-actions">
+    @if (auth.isLoggedIn()) {
+      <span class="user-greeting">
+        {{ auth.isAdmin() ? '👨‍💼 Admin' : 'Ciao, ' + auth.currentUser()!.name.split(' ')[0] }}
+      </span>
+    }
+
+    @if (auth.isAdmin()) {
+      <button class="btn btn-admin" (click)="nav.navigate('admin')">
+        👥 Gestione Clienti
+      </button>
+    }
+
+    @if (!auth.isLoggedIn()) {
+      <button class="btn btn-primary" (click)="openAuth.emit()">
+        Accedi
+      </button>
+    }
+
+    @if (auth.isLoggedIn() && !auth.isAdmin()) {
+      <button class="btn btn-primary" (click)="nav.navigate('dashboard')">
+        👤 Il mio account
+      </button>
+    }
+
+    <button class="btn btn-secondary btn-icon" (click)="openCart.emit()">
+      🛒 Carrello
+      @if (cart.totalItems() > 0) {
+        <span class="cart-badge">{{ cart.totalItems() }}</span>
+      }
+    </button>
+  </div>
+</header>

@@ -1,0 +1,152 @@
+<div class="container">
+  <div class="dashboard">
+    <div class="dashboard-header">
+      <h2 class="dashboard-title">📊 Pannello Gestione Clienti</h2>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+        <button class="btn btn-primary" (click)="nav.navigate('home')">← Torna alla Home</button>
+        <button class="btn btn-secondary" (click)="logout()">Esci dall'Account</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ auth.users().length }}</div>
+        <div class="stat-label">Clienti Registrati</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ cart.orders().length }}</div>
+        <div class="stat-label">Ordini Totali</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">€{{ totalRevenue | number:'1.2-2' }}</div>
+        <div class="stat-label">Fatturato Totale</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value">{{ marketingOptIn }}</div>
+        <div class="stat-label">Iscritti Newsletter</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filter-section">
+      <input
+        class="filter-input"
+        type="text"
+        placeholder="🔍 Cerca cliente per nome o email..."
+        [(ngModel)]="searchText">
+      <select class="filter-input" [(ngModel)]="filterConsent" style="max-width:220px;">
+        <option value="all">Tutti i clienti</option>
+        <option value="yes">Solo iscritti newsletter</option>
+        <option value="no">Non iscritti</option>
+      </select>
+      <button class="btn btn-primary" (click)="exportData()">📥 Esporta Dati</button>
+    </div>
+
+    <!-- Table -->
+    <div style="overflow-x: auto;">
+      <table class="customer-table">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Città</th>
+            <th>Ordini</th>
+            <th>Totale Speso</th>
+            <th>Newsletter</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (filteredUsers.length === 0) {
+            <tr>
+              <td colspan="8" style="text-align:center; padding: 3rem; color: var(--text-muted);">
+                Nessun cliente trovato
+              </td>
+            </tr>
+          }
+          @for (user of filteredUsers; track user.id) {
+            <tr>
+              <td><strong>{{ user.name }}</strong></td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phone }}</td>
+              <td>{{ user.city }}</td>
+              <td><strong>{{ getOrderCount(user.id) }}</strong></td>
+              <td><strong style="color: var(--brand);">€{{ getTotalSpent(user.id) | number:'1.2-2' }}</strong></td>
+              <td>
+                <span class="consent-badge" [class.consent-yes]="user.marketingConsent" [class.consent-no]="!user.marketingConsent">
+                  {{ user.marketingConsent ? '✓ Sì' : '✗ No' }}
+                </span>
+              </td>
+              <td>
+                <div class="action-btns">
+                  @if (user.marketingConsent) {
+                    <button class="btn btn-primary btn-small" (click)="openMarketing(user)">
+                      📧 Contatta
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Marketing Modal -->
+@if (showMarketingModal()) {
+  <div class="modal-overlay" (click)="closeMarketing()">
+    <div class="modal-content modal-content-wide" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">📧 Invia Comunicazione Marketing</h2>
+        <button class="close-modal" (click)="closeMarketing()">×</button>
+      </div>
+
+      <div class="form-group">
+        <label>Destinatario</label>
+        <input type="text" [value]="selectedCustomer?.name + ' – ' + selectedCustomer?.email" readonly
+               style="background: var(--surface);">
+      </div>
+
+      <div class="form-group">
+        <label>Oggetto della comunicazione</label>
+        <input type="text" [(ngModel)]="marketingSubject" placeholder="Es: Nuove offerte autunnali">
+      </div>
+
+      <div class="form-group">
+        <label>Messaggio</label>
+        <textarea [(ngModel)]="marketingMessage" rows="6"
+                  placeholder="Scrivi qui il tuo messaggio promozionale..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Tipo di documento da allegare</label>
+        <select [(ngModel)]="attachmentType" (change)="updateAttachmentName()">
+          <option value="catalog">📄 Catalogo Prodotti (PDF)</option>
+          <option value="offers">🎁 Offerte Speciali (PDF)</option>
+          <option value="brochure">📘 Brochure Aziendale (PDF)</option>
+          <option value="newsletter">📰 Newsletter Stagionale (PDF)</option>
+          <option value="custom">📎 Altro documento</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Nome file allegato</label>
+        <input type="text" [(ngModel)]="attachmentName">
+      </div>
+
+      <div style="background: var(--brand-light); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem;">
+        <p style="color: var(--brand); font-weight: 600; margin-bottom: 0.5rem;">📎 Anteprima allegato:</p>
+        <p style="color: var(--text-muted);">{{ attachmentName }} (1.2 MB)</p>
+      </div>
+
+      <div style="display:flex; gap:1rem; justify-content:flex-end;">
+        <button class="btn btn-secondary" (click)="closeMarketing()">Annulla</button>
+        <button class="btn btn-primary" (click)="sendMarketing()">📧 Invia Comunicazione</button>
+      </div>
+    </div>
+  </div>
+}

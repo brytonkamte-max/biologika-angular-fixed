@@ -1,0 +1,45 @@
+<div class="modal-overlay" (click)="close.emit()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">🛒 Il Mio Carrello</h2>
+      <button class="close-modal" (click)="close.emit()">×</button>
+    </div>
+
+    @if (cart.items().length === 0) {
+      <p style="text-align:center; color: var(--text-muted); padding: 2rem;">
+        Il carrello è vuoto! Aggiungi qualche prodotto. 🌿
+      </p>
+    } @else {
+      <div class="cart-items">
+        @for (item of cart.items(); track item.id) {
+          <div class="cart-item">
+            <div class="item-image" [style.background-image]="'url(' + item.image + ')'"></div>
+            <div class="item-info">
+              <h4>{{ item.name }}</h4>
+              <p class="item-price">€ {{ item.price.toFixed(2) }} × {{ item.quantity }}</p>
+            </div>
+            <div class="item-total">
+              <p class="item-total-price">€ {{ (item.price * item.quantity).toFixed(2) }}</p>
+              <button class="remove-btn" (click)="removeItem(item.id)">🗑️ Rimuovi</button>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="cart-footer">
+        @if (hasFirstOrderDiscount) {
+          <div class="discount-info">
+            <p>🎉 Sconto primo ordine applicato: -5%</p>
+          </div>
+        }
+        <div class="total-row">
+          <span class="total-label">Totale:</span>
+          <span class="total-amount">€ {{ total.toFixed(2) }}</span>
+        </div>
+        <button class="btn btn-primary btn-full" (click)="checkout()">
+          Completa l'Acquisto
+        </button>
+      </div>
+    }
+  </div>
+</div>
